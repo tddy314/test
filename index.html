@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Trắc nghiệm du lịch mùa hè</title>
+  <style>
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background: #e3f2fd;
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      background: line-yellow (to right, #4fc3f7, #0288d1);
+      color: black;
+      text-align: center;
+      padding: 20px;
+    }
+
+    .quiz-container {
+      max-width: 700px;
+      margin: 40px auto;
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .question {
+      font-size: 20px;
+      margin-bottom: 20px;
+    }
+
+    .answers button {
+      display: block;
+      width: 100%;
+      margin: 10px 0;
+      padding: 12px;
+      font-size: 16px;
+      background: #b3e5fc;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .answers button:hover {
+      background: #81d4fa;
+    }
+
+    .result {
+      font-size: 22px;
+      font-weight: bold;
+      text-align: center;
+      padding: 20px;
+      background: #e1f5fe;
+      border-radius: 10px;
+      margin-top: 30px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <h1>Mùa hè này bạn nên đi đâu?</h1>
+    <p>Khám phá điểm đến lý tưởng cho tính cách của bạn</p>
+  </header>
+
+  <div class="quiz-container" id="quiz">
+    <div class="question" id="question">Câu hỏi sẽ hiển thị ở đây</div>
+    <div class="answers" id="answers"></div>
+  </div>
+
+  <script>
+    const questions = [{
+        q: "1. Khi có thời gian rảnh, bạn thường muốn làm gì?",
+        a: ["Khám phá điều mới", "Tụ tập chụp hình", "Ở nhà nghỉ ngơi", "Gần gũi thiên nhiên"]
+      },
+      {
+        q: "2. Bạn cảm thấy hạnh phúc nhất khi:",
+        a: ["Trải nghiệm văn hóa mới", "Có nhiều ảnh đẹp", "Được nghỉ ngơi", "Hòa mình vào thiên nhiên"]
+      },
+      {
+        q: "3. Bạn chọn loại hình du lịch nào?",
+        a: ["Phiêu lưu", "Thành phố – giải trí", "Nghỉ dưỡng", "Sinh thái"]
+      },
+      {
+        q: "4. Điều bạn ưu tiên khi chọn địa điểm du lịch?",
+        a: ["Hoạt động trải nghiệm", "Nhiều điểm check-in", "Yên tĩnh, dịch vụ tốt", "Không khí trong lành"]
+      },
+      {
+        q: "5. Bạn thích kiểu thời tiết nào khi đi du lịch?",
+        a: ["Mát mẻ", "Nắng đẹp", "Không quá nóng", "Se lạnh"]
+      },
+      {
+        q: "6. Đi du lịch, bạn đi với ai?",
+        a: ["Một mình", "Hội bạn thân", "Người yêu/gia đình nhỏ", "Nhóm nhỏ yêu thiên nhiên"]
+      },
+      {
+        q: "7. Khi nghe “du lịch mùa hè”, bạn nghĩ đến:",
+        a: ["Leo núi, trekking", "Biển xanh, cát trắng", "Resort, spa", "Rừng cây, camping"]
+      },
+      {
+        q: "8. Bạn thích trải nghiệm nào nhất?",
+        a: ["Khám phá bản địa", "Lễ hội, chợ đêm", "Massage, hồ bơi", "Tắm suối, leo đèo"]
+      },
+      {
+        q: "9. Điểm mạnh của bạn là gì?",
+        a: ["Thích nghi tốt", "Hoạt bát, vui vẻ", "Biết nghỉ ngơi", "Yêu thiên nhiên, yên tĩnh"]
+      },
+      {
+        q: "10. Một kỳ nghỉ lý tưởng với bạn là:",
+        a: ["Thử thách mới", "Chụp 1000 tấm ảnh đẹp", "Ngủ đủ, ăn ngon", "Không mạng, không ồn"]
+      }
+    ];
+
+    const results = [
+    '<img src="https://i.ibb.co/YB0cnbGs/pic.jpg" alt="" width="200cm" height="200cm"> Bạn là người thích phiêu lưu! Gợi ý: Hà Giang, Sapa, Tây Bắc.',
+    "🌴 Bạn yêu sự năng động! Gợi ý: Đà Nẵng, Phú Quốc, Singapore.",
+    "🌺 Bạn cần thư giãn! Gợi ý: Hội An, Maldives, Đà Lạt.",
+    "🌿 Bạn gần gũi thiên nhiên! Gợi ý: Mộc Châu, Cúc Phương, rừng Cát Tiên."
+    ];
+
+    let score = [0, 0, 0, 0];
+    let current = 0;
+
+    function showQuestion() {
+      document.getElementById("question").innerText = questions[current].q;
+      const answerEl = document.getElementById("answers");
+      answerEl.innerHTML = "";
+      questions[current].a.forEach((answer, i) => {
+        const btn = document.createElement("button");
+        btn.innerText = answer;
+        btn.onclick = () => {
+          score[i]++;
+          current++;
+          if (current < questions.length) {
+            showQuestion();
+          } else {
+            showResult();
+          }
+        };
+        answerEl.appendChild(btn);
+      });
+    }
+
+    function showResult() {
+      const max = Math.max(...score);
+      const index = score.indexOf(max);
+      document.getElementById("quiz").innerHTML = `
+      <div class='result'>${results[index]}</div>
+    `;
+    }
+    showQuestion();
+  </script>
+
+</body>
+
+</html>
